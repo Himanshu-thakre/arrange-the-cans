@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARRANGING GAME BY HT</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font: arial;
+}
+
+.start {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  text-align: center;
+}
+
+#won-base {
+  height: 100%;
+  width: 100%;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+#won {
+  height: 10.5rem;
+  width: 17rem;
+  background-color: #f6dbfd79;
+  border: 1px solid black;
+  border-radius: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#message-box1 {
+  height: 8.5rem;
+  width: 15rem;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#message-box2 {
+  height: 8.5rem;
+  width: 15rem;
+  border: 1px solid black;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#start-button {
+  height: 2rem;
+  width: 4rem;
+}
+
+#continue-button {
+  height: 2rem;
+  width: 5rem;
+}
+
+#end-button {
+  height: 2rem;
+  width: 4rem;
+}
+
+#ok-button {
+  height: 2rem;
+  width: 4rem;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#nav-bar {
+  height: 4rem;
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: #83C5BE;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
+#nav-bar div {
+  color: black;
+  display: inline;
+}
+
+#main {
+  height: calc(100vh - 4rem);
+  width: 100%;
+  background-color: #EDF6F9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#base {
+  height: 11rem;
+  width: 32rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+#base div {
+  height: 9rem;
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#base div button {
+  height: 9rem;
+  width: 6rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #EDF6F9;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#base div button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.correct {
+  height: 3rem;
+  width: 32rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+#check-div {
+  height: 3rem;
+  width: 32rem;
+  display: flex;
+  justify-content: center;
+  top: 0px;
+}
+
+#check {
+  height: 2rem;
+  width: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  </style>
+</head>
+
+<body>
+  <div class="start">
+    <div id="message-box1">
+      <p>
+        TO BEGIN THE GAME PRESS <i>START</i> BUTTON
+      </p>
+      <button id="start-button">
+        <b>START</b>
+      </button>
+    </div>
+
+    <div id="message-box2">
+      <p>
+        <i>CONTINUE ?</i>
+      </p>
+      <div id="buttons">
+        <button id="continue-button">
+          <b>CONTINUE</b>
+        </button>
+        <button id="end-button">
+          <b>END</b>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+<div id="nav-bar">
+  <div class="title">
+    GAME<sub> (BY HT)</sub>
+  </div>
+  <div class="timer">
+    TIME:
+    <div class="time">
+      00:00
+    </div>
+  </div>
+</div>
+
+  <div id="main">
+    <div id="won-base">
+      <div id="won">
+        <p>
+          <b><i>YOU WON BRO!</i></b>
+        </p>
+        <button id="ok-button">
+          <b>OK</b>
+        </button>
+      </div>
+    </div>
+    <div class="correct">
+      CORRECT:
+      <div class="num"></div>
+    </div>
+    <div id="base">
+      <div id="b1"></div>
+      <div id="b2"></div>
+      <div id="b3"></div>
+      <div id="b4"></div>
+      <div id="b5"></div>
+    </div>
+    <div id="check-div">
+      <button id="check">CHECK</button>
+    </div>
+  </div>
+
+  <script>
+let doc = document.documentElement;
+let landscape = window.matchMedia("(orientation: landscape)");
+let body = document.querySelector("body");
+let message1 = document.querySelector("#message-box1");
+let message2 = document.querySelector("#message-box2");
+let menu = document.querySelector(".start");
+let start = document.querySelector("#start-button");
+let continueB = document.querySelector("#continue-button");
+let end = document.querySelector("#end-button");
+let ok = document.querySelector("#ok-button");
+let places = document.querySelectorAll("#base div");
+let check = document.querySelector("#check");
+let correct = document.querySelector(".num");
+let time = document.querySelector(".time");
+let wonSound = new Audio("winning sound.mp3");
+let startSound = new Audio("start sound.mp3");
+let displayWon = document.querySelector("#won-base");
+let select, selected, right, left, toggle = false, target = null, timerInterval;
+
+
+
+let randomList = (a) => {
+  for (let i = 1; i <= 5; i++) {
+    a.push(Number(i));
+    a.sort(() => Math.random() - 0.5);
+    a.slice(0, 5);
+  }
+}
+
+const winningOrder = [];
+let initailOrder = [];
+randomList(winningOrder);
+randomList(initailOrder);
+let currentOrder = initailOrder;
+console.log("winning order", winningOrder);
+console.log("initail order", initailOrder);
+
+
+let i = 0, button;
+for (let order of initailOrder) {
+  button = document.createElement("button");
+  button.id = order;
+  button.style.backgroundImage = `url(${order}.png)`;
+  button.style.outline = "none";
+  button.style.boxShadow = "none";
+  places[i].appendChild(button);
+  i += 1;
+}
+let cans = document.querySelectorAll("#base div button");
+
+
+let temp;
+let swap = (a, b) => {
+  temp = b.innerHTML;
+  b.innerHTML = a.innerHTML;
+  a.innerHTML = temp;
+  temp = null;
+}
+
+
+let changeInOrder = () => {
+  for (let i = 0; i <= 4; i++) {
+    currentOrder.push(`${Number(places[i].firstChild.id)}`);
+  }
+}
+
+
+let initail, final, timeoutId, mr, ml, store, count2;
+let move = (place, i) => {
+
+  try {
+    clearTimeout(timeoutId);
+    place.addEventListener("pointerdown",
+      e => {
+        initail = e.x;
+      })
+
+    place.addEventListener("pointermove",
+      e => {
+    console.log(`moved ${i}`)
+        final = e.x;
+
+        if (toggle) {
+          if (final > initail) {
+            if (place != places[4]) {
+              currentOrder = [];
+            swap(selected, right);
+            changeInOrder();
+            console.log(`mr`)
+            mr = true;
+            }
+          } else if (final < initail) {
+            if (place != places[0]) {
+            currentOrder = [];
+            swap(selected, left);
+            changeInOrder()
+            console.log(`ml`)
+            ml = true;
+            }
+          }
+          
+          if (mr) {
+            target = i + 1;
+            timeoutId = setTimeout(() => {
+          selected = document.querySelector(`#b${target + 1}`);
+          right = document.querySelector(`#b${target + 2}`);
+          left = document.querySelector(`#b${target}`);
+          move(places[target], target)
+            }, 500)
+            mr = false;
+          }
+          if (ml) {
+            target = i - 1;
+            timeoutId = setTimeout(() => {
+          selected = document.querySelector(`#b${target + 1}`);
+          right = document.querySelector(`#b${target + 2}`);
+          left = document.querySelector(`#b${target}`);
+          move(places[target], target)
+            }, 500)
+            ml = false;
+          }
+        }
+      },
+      {
+        once: true
+      });
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+
+let selectItem = () => {
+  for (let i = 0; i <= 4; i++) {
+    places[i].addEventListener("click", e => {
+      if (toggle) {
+        toggle = false;
+      } else {
+        toggle = true;
+      }
+      select = e.srcElement.parentNode.id;
+      selected = document.querySelector(`#${select}`);
+      right = document.querySelector(`#b${Number(select[1]) + 1}`);
+      left = document.querySelector(`#b${Number(select[1]) - 1}`);
+      e.target.style.border = "1px solid black";
+
+      cans = document.querySelectorAll("#base div button");
+      if (toggle) {
+        for (let can of cans) {
+          can.disabled = true;
+        }
+        e.target.disabled = false;
+        move(places[i], i);
+      } else {
+        for (let can of cans) {
+          can.disabled = false;
+        }
+        clearTimeout(timeoutId);
+        e.target.style.border = "none";
+      }
+    });
+  }
+
+  console.log("working...");
+}
+
+
+let count1 = 0;
+for (let i = 0; i <= 4; i++) {
+  if (currentOrder[i] == winningOrder[i]) {
+    count1 += 1;
+  }
+}
+correct.innerText = count1;
+
+let count = 0;
+check.addEventListener("click", e => {
+  for (let i = 0; i <= 4; i++) {
+    if (currentOrder[i] == winningOrder[i]) {
+      count += 1;
+    }
+  }
+  correct.innerText = count;
+  if (count == 5) {
+    clearInterval(timerInterval);
+    wonSound.play();
+    displayWon.style.display = "flex";
+    ok.addEventListener("click", e => {
+      displayWon.style.display = "none";
+      location.reload();
+    })
+  } else {
+    count = 0;
+  }
+});
+
+
+selectItem();
+start.addEventListener("click",
+  e => {
+    startSound.play();
+    stop = false;
+    let counterSec = 1;
+    let counterMin = 0;
+    timerInterval = setInterval(() => {
+           if (counterSec == 60) {
+              counterMin +=1;
+              counterSec = 0;
+            }
+            if(counterSec < 10) {
+              time.innerText = `0${counterMin}:0${counterSec}`;
+            } else {
+              time.innerText = `0${counterMin}:${counterSec}`;
+            }
+            counterSec++;
+        }, 1000);
+    doc.requestFullscreen().then(() => {
+      screen.orientation.lock("landscape");
+    }).then(() => {
+      menu.style.display = "none";
+    });
+  });
+
+landscape.addEventListener("change",
+  e => {
+    if (!landscape.matches) {
+      menu.style.display = "flex";
+      message1.style.display = "none";
+      message2.style.display = "flex";
+      displayWon.style.display = "none";
+      
+      continueB.addEventListener("click", e => {
+        doc.requestFullscreen().then(() => {
+          screen.orientation.lock("landscape");
+        }).then(() => {
+          menu.style.display = "none";
+        });
+      });
+
+      end.addEventListener("click", e => {
+        location.reload();
+      })
+    }
+  });
+  </script>
+</body>
+
+</html>
